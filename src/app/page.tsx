@@ -61,7 +61,7 @@ export default function Home() {
         <div className={styles.buttonContainer}>
           <Link href="/admin">
             <button className={`${styles.button} ${styles.adminButton}`}>
-              Área Administrativa
+            Adicionar Novo Fato
             </button>
           </Link>
           <button 
