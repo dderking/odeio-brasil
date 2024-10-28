@@ -1,0 +1,83 @@
+/* Estilos gerais da página */
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: #2c3e50;
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centraliza verticalmente */
+  align-items: center;    /* Centraliza horizontalmente */
+  gap: 2rem;             /* Espaçamento entre os elementos */
+}
+
+/* Estilos dos botões */
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.adminButton {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.adminButton:hover {
+  background-color: #c0392b;
+}
+
+.blueButton {
+  background-color: #3498db;
+  color: white;
+}
+
+.blueButton:hover {
+  background-color: #2980b9;
+}
+
+/* Estilos para o fato exibido */
+.factContainer {
+  max-width: 800px;
+  width: 100%;
+  min-height: 100px;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
+/* Outros estilos que você possa ter... */

@@ -1,101 +1,81 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect } from 'react';
+import styles from './page.module.css';
+import Link from 'next/link';
+
+interface Fact {
+  _id: string; // Mudado para string pois MongoDB usa ObjectId
+  fact: string;  // Certifique-se que está usando 'fact' aqui
+}
+
+async function getFacts(): Promise<Fact[]> {
+  try {
+    const res = await fetch('/api/facts');
+    if (!res.ok) {
+      throw new Error('Failed to fetch facts');
+    }
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching facts:', error);
+    return [];
+  }
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [facts, setFacts] = useState<Fact[]>([]);
+  const [currentFact, setCurrentFact] = useState<Fact | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  useEffect(() => {
+    async function loadFacts() {
+      try {
+        const fetchedFacts = await getFacts();
+        setFacts(fetchedFacts);
+        if (fetchedFacts.length > 0) {
+          // Seleciona um fato aleatório ao invés do primeiro
+          const randomIndex = Math.floor(Math.random() * fetchedFacts.length);
+          setCurrentFact(fetchedFacts[randomIndex]);
+        }
+      } catch (error) {
+        console.error('Failed to load facts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadFacts();
+  }, []);
+
+  const getRandomFact = () => {
+    const randomIndex = Math.floor(Math.random() * facts.length);
+    setCurrentFact(facts[randomIndex]);
+  };
+
+  if (isLoading) return <div className={styles.loading}>Carregando...</div>;
+
+  return (
+    <div className={styles.container}>
+      <main className={styles.main}>
+        <h1>Fatos sobre Corrupção no Brasil</h1>
+        <div className={styles.buttonContainer}>
+          <Link href="/admin">
+            <button className={`${styles.button} ${styles.adminButton}`}>
+              Área Administrativa
+            </button>
+          </Link>
+          <button 
+            className={`${styles.button} ${styles.blueButton}`}
+            onClick={getRandomFact}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Ver outro
+          </button>
+        </div>
+        {/* Container do fato */}
+        <div className={styles.factContainer}>
+          {currentFact ? currentFact.fact : 'Nenhum fato disponível. Clique no botão para ver um fato.'}
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
