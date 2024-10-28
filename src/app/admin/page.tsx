@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import styles from './Admin.module.css';
 import { signIn, signOut, useSession } from 'next-auth/react';
